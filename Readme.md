@@ -98,6 +98,30 @@ var should = chai.should();
 var expect = chai.expect;
 ```
 
+#### With [tape](https://github.com/substack/tape)
+
+```javascript
+const _tape = require('tape');
+const respect = require('respect');
+const addAssertions = require('extend-tape');
+
+const tape = addAssertions(_tape, {
+  respect(act, exp, msg, opts) {
+    const result = respect.check(act, exp, opts);
+    if(!result) {
+      // Give useful output if this assertion fails
+      this.comment("Expected:");
+      this.comment(JSON.stringify(exp));
+      this.comment("Actual:");
+      this.comment(JSON.stringify(act));
+      printDiff(diff(act, exp));
+    }
+    this.ok(result, msg || 'respect spec should match actual');
+  }
+});
+
+```
+
 
 ### Assertions
 
